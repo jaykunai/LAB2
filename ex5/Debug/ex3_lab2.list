@@ -81,7 +81,7 @@ Disassembly of section .text:
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-int hour = 15 , minute = 15 , second = 50;
+int hour = 15 , minute = 8 , second = 50;
 void display7SEG(int num){
  800014c:	b5b0      	push	{r4, r5, r7, lr}
  800014e:	b088      	sub	sp, #32
