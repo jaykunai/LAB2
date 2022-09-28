@@ -59,15 +59,8 @@ int hour = 15 , minute = 8 , second = 50;
 void display7SEG(int num){
 	uint16_t display[10] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7D, 0x07, 0x7F, 0x6f};
 	uint16_t bit_var = display[num];
-//	HAL_GPIO_WritePin(SEG0_GPIO_Port, SEG0_Pin, !(bit_var & 0x01));
-//		HAL_GPIO_WritePin(SEG1_GPIO_Port, SEG1_Pin, !((bit_var>>1)&0x01));
-//		HAL_GPIO_WritePin(SEG2_GPIO_Port, SEG2_Pin, !((bit_var>>2)&0x01));
-//		HAL_GPIO_WritePin(SEG3_GPIO_Port, SEG3_Pin, !((bit_var>>3)&0x01));
-//		HAL_GPIO_WritePin(SEG4_GPIO_Port, SEG4_Pin, !((bit_var>>4)&0x01));
-//		HAL_GPIO_WritePin(SEG5_GPIO_Port, SEG5_Pin, !((bit_var>>5)&0x01));
-//		HAL_GPIO_WritePin(SEG6_GPIO_Port, SEG6_Pin, !((bit_var>>6)&0x01));
-	    HAL_GPIO_WritePin(GPIOB, bit_var, RESET);
-	    HAL_GPIO_WritePin(GPIOB, ~bit_var, SET);
+	HAL_GPIO_WritePin(GPIOB, bit_var, RESET);
+	HAL_GPIO_WritePin(GPIOB, ~bit_var, SET);
 }
 const int MAX_LED = 4;
 int index_led = 0;
@@ -122,34 +115,16 @@ void updateClockBuffer(){
 }
 int counter = 25;
 int counter1 = 100;
-int timer0_counter = 0;
-int timer0_flag = 0;
-int TIMER_CYCLE = 10;
-void setTimer0 ( int duration) {
-	timer0_counter = duration / TIMER_CYCLE ;
-	timer0_flag = 0;
-}
-void timer_run() {
-	if( timer0_counter > 0) {
-		timer0_counter --;
-		if( timer0_counter == 0) timer0_flag = 1;
-	}
-}
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 {
 	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, RESET);
 	counter--;
-	counter1--;
-		if(counter1 <= 0){
-			counter1 = 100;
-			HAL_GPIO_TogglePin(GPIOA, DOT_Pin);
-		}
 		if(counter <= 0){
 		counter = 25;
 		update7SEG(index_led++);
 		if(index_led > 3) index_led = 0;
 		}
-		timer_run() ;
+		timerRun() ;
 }
 
 /* USER CODE END 0 */
@@ -185,7 +160,10 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim2);
-  setTimer0 (1000) ;
+  setTimer0 (2);
+  setTimer0 (3) ;
+  setTimer0 (5) ;
+  setTimer0 (7) ;
   /* USER CODE END 2 */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -193,20 +171,32 @@ int main(void)
   {
 	  if( timer0_flag == 1) {
 	  		  HAL_GPIO_TogglePin ( LED_RED_GPIO_Port , LED_RED_Pin);
-	  		  setTimer0 (2000) ;
+	  		  setTimer0 (1000) ;
 	  }
-	  second++;
-	  if(second >= 60){
-		  second = 0;
-		  minute++;
+	  if(timer1_flag ==1){
+		  updateClockBuffer();
+		  update7SEG(index_led++);
+		  		if(index_led > 3) index_led = 0;
+		  		}
 	  }
-	  if(minute >=60){
-		  minute = 0;
-		  hour++;
+	  if(timer2_flag == 1){
+		  second++;
+		  if(second >= 60){
+		 	second = 0;
+		 	minute++;
+		 }
 	  }
-	  if(hour >=24){
-		  hour = 0;
+	  if(timer3_flag == 1){
+		  if(minute >=60){
+			  minute = 0;
+			  hour++;
+		  }
 	  }
+	  if(timer4_flag == 1){
+	 		  if(hour >=24){
+	 		  hour = 0;
+	 		 }
+	 	  }
 	  updateClockBuffer();
     /* USER CODE END WHILE */
 
