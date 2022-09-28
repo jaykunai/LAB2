@@ -171,10 +171,9 @@ int main(void)
   {
 	  if( timer0_flag == 1) {
 	  		  HAL_GPIO_TogglePin ( LED_RED_GPIO_Port , LED_RED_Pin);
-	  		  setTimer0 (1000) ;
+	  		  setTimer0 (100) ;
 	  }
 	  if(timer1_flag ==1){
-		  updateClockBuffer();
 		  update7SEG(index_led++);
 		  		if(index_led > 3) index_led = 0;
 		  		}
@@ -185,19 +184,21 @@ int main(void)
 		 	second = 0;
 		 	minute++;
 		 }
+		  updateClockBuffer();
 	  }
 	  if(timer3_flag == 1){
 		  if(minute >=60){
 			  minute = 0;
 			  hour++;
 		  }
+		  updateClockBuffer();
 	  }
 	  if(timer4_flag == 1){
 	 		  if(hour >=24){
 	 		  hour = 0;
 	 		 }
+	 		 updateClockBuffer();
 	 	  }
-	  updateClockBuffer();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
