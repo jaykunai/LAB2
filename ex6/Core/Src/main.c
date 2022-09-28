@@ -149,7 +149,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 		update7SEG(index_led++);
 		if(index_led > 3) index_led = 0;
 		}
-		timer_run() ;
+		timer_run();
 }
 
 /* USER CODE END 0 */
@@ -185,7 +185,7 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim2);
-  setTimer0 (1000) ;
+  setTimer0 (1000);
   /* USER CODE END 2 */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -193,7 +193,7 @@ int main(void)
   {
 	  if( timer0_flag == 1) {
 	  		  HAL_GPIO_TogglePin ( LED_RED_GPIO_Port , LED_RED_Pin);
-	  		  setTimer0 (2000) ;
+	  		  setTimer0(2000) ;
 	  }
 	  second++;
 	  if(second >= 60){
