@@ -155,7 +155,7 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim2);
   setTimer0(100);
   setTimer1(25) ;
-  setTimer2(100) ;
+  setTimer2(10) ;
   /* USER CODE END 2 */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */

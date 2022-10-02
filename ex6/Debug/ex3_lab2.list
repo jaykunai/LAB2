@@ -418,8 +418,8 @@ int main(void)
   setTimer1(25) ;
  8000384:	2019      	movs	r0, #25
  8000386:	f000 f95b 	bl	8000640 <setTimer1>
-  setTimer2(100) ;
- 800038a:	2064      	movs	r0, #100	; 0x64
+  setTimer2(10) ;
+ 800038a:	200a      	movs	r0, #10
  800038c:	f000 f96c 	bl	8000668 <setTimer2>
   /* USER CODE END 2 */
   /* Infinite loop */
