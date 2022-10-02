@@ -168,8 +168,6 @@ void updateLEDMatrix (int index ){
 		break;
 	}
 }
-<<<<<<< HEAD
-=======
 // LED MATRIX
 //const int MAX_LED_MATRIX = 8;
 //int index_led_matrix = 0;
@@ -212,7 +210,6 @@ void updateLEDMatrix (int index ){
 //		break;
 //	}
 //}
->>>>>>> a2952cad1e7fe5c9f32b31460edbafaea45a9f78
 /* USER CODE END 0 */
 
 /**
@@ -261,11 +258,7 @@ int main(void)
 	  HAL_GPIO_WritePin(GPIOB, matrix_buffer[0]<<8, RESET);
 	  if(timer0_flag == 1) {
 	  		  HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
-<<<<<<< HEAD
 	  		  setTimer0(100) ;
-=======
-	  		  setTimer0(100);
->>>>>>> a2952cad1e7fe5c9f32b31460edbafaea45a9f78
 	  }
 	  if(timer1_flag == 1){
 		  update7SEG(index_led++);
@@ -282,14 +275,9 @@ int main(void)
 		 	minute = 0;
 		 	hour++;
 		 	}
-<<<<<<< HEAD
-		  if(hour >= 24){
-			 hour = 0;
-=======
 		  if(hour >=24){
 			  hour = 0;
->>>>>>> a2952cad1e7fe5c9f32b31460edbafaea45a9f78
-		 }
+		  }
 		  updateClockBuffer();
 		  setTimer2(100);
 	  }
