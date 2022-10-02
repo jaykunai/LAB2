@@ -180,9 +180,8 @@ int main(void)
 		 	minute = 0;
 		 	hour++;
 		 	}
-		  if(minute >=60){
-		 			  minute = 0;
-		 			  hour++;
+		  if(hour >= 24){
+			 hour = 0;
 		 }
 		  updateClockBuffer();
 		  setTimer2(100);
