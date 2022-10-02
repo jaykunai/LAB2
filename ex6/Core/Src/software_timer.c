@@ -29,7 +29,10 @@ void setTimer2(int duration){
 	timer2_counter = duration;
 	timer2_flag = 0;
 }
-
+void setTimer3(int duration){
+	timer2_counter = duration;
+	timer2_flag = 0;
+}
 void timerRun(){
 	if(timer0_counter > 0){
 			timer0_counter--;
