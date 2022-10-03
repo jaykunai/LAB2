@@ -30,13 +30,8 @@ void setTimer2(int duration){
 	timer2_flag = 0;
 }
 void setTimer3(int duration){
-<<<<<<< HEAD
 	timer3_counter = duration;
 	timer3_flag = 0;
-=======
-	timer2_counter = duration;
-	timer2_flag = 0;
->>>>>>> a2952cad1e7fe5c9f32b31460edbafaea45a9f78
 }
 void timerRun(){
 	if(timer0_counter > 0){
