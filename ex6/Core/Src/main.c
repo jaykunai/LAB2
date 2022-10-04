@@ -120,10 +120,22 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 	timerRun();
 }
 //LED MATRIX
+
 const int MAX_LED_MATRIX = 8;
 int index_led_matrix = 0;
 //uint8_t matrix_buffer[8] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
 uint8_t matrix_buffer[8] = {0x00, 0xFC, 0xfe, 0x33, 0x33, 0xFE, 0xFC, 0x00};
+void chang_matrix_buffer(uint8_t matrix_buffer[], uint8_t n){
+	uint8_t temp;
+	temp = matrix_buffer[0];
+	uint8_t var;
+	for(uint8_t i = 0; i<n-1; ++i){
+		var = matrix_buffer[i];
+		matrix_buffer[i] = matrix_buffer[i+1];
+		matrix_buffer[i + 1] = var;
+	}
+	matrix_buffer[n-1] = temp;
+}
 void updateLEDMatrix (int index ) {
 	switch (index) {
 	case 0:
@@ -247,7 +259,10 @@ int main(void)
 		  setTimer2(100);
 	  }
 	  if(timer3_flag == 1){
-		  if(index_led_matrix > 7) index_led_matrix = 0;
+		  if(index_led_matrix > 7) {
+			  index_led_matrix = 0;
+			  chang_matrix_buffer(matrix_buffer, 8);
+		  }
 		  updateLEDMatrix(index_led_matrix++);
 		  setTimer3(50);
 	  }
