@@ -122,7 +122,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 //LED MATRIX
 const int MAX_LED_MATRIX = 8;
 int index_led_matrix = 0;
-uint8_t matrix_buffer[8] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
+//uint8_t matrix_buffer[8] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
+uint8_t matrix_buffer[8] = {0x00, 0xFC, 0xfe, 0x33, 0x33, 0xFE, 0xFC, 0x00};
 void updateLEDMatrix (int index ) {
 	switch (index) {
 	case 0:
@@ -139,7 +140,7 @@ void updateLEDMatrix (int index ) {
 		break;
 	case 2:
 		HAL_GPIO_WritePin(ENM2_GPIO_Port, ENM2_Pin, RESET);
-		HAL_GPIO_WritePin(GPIOA, ENM0_Pin|ENM1_Pin|ENM3_Pin|ENM4_Pin|ENM5_Pin|ENM6_Pin|ENM7_Pin, SET);
+		HAL_GPIO_WritePin(GPIOA, ENM0_Pin|ENM1_Pin| ENM3_Pin|ENM4_Pin|ENM5_Pin|ENM6_Pin|ENM7_Pin, SET);
 		HAL_GPIO_WritePin(GPIOB, 0xff<<8, SET);
 		HAL_GPIO_WritePin(GPIOB, matrix_buffer[index]<<8, RESET);
 		break;
@@ -248,7 +249,7 @@ int main(void)
 	  if(timer3_flag == 1){
 		  if(index_led_matrix > 7) index_led_matrix = 0;
 		  updateLEDMatrix(index_led_matrix++);
-		  setTimer3(10);
+		  setTimer3(50);
 	  }
     /* USER CODE END WHILE */
 

@@ -380,7 +380,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 //LED MATRIX
 const int MAX_LED_MATRIX = 8;
 int index_led_matrix = 0;
-uint8_t matrix_buffer[8] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
+//uint8_t matrix_buffer[8] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
+uint8_t matrix_buffer[8] = {0x00, 0xFC, 0xfe, 0x33, 0x33, 0xFE, 0xFC, 0x00};
 void updateLEDMatrix (int index ) {
  8000364:	b580      	push	{r7, lr}
  8000366:	b082      	sub	sp, #8
@@ -467,7 +468,7 @@ void updateLEDMatrix (int index ) {
  8000416:	f44f 6180 	mov.w	r1, #1024	; 0x400
  800041a:	485e      	ldr	r0, [pc, #376]	; (8000594 <updateLEDMatrix+0x230>)
  800041c:	f000 fe7c 	bl	8001118 <HAL_GPIO_WritePin>
-		HAL_GPIO_WritePin(GPIOA, ENM0_Pin|ENM1_Pin|ENM3_Pin|ENM4_Pin|ENM5_Pin|ENM6_Pin|ENM7_Pin, SET);
+		HAL_GPIO_WritePin(GPIOA, ENM0_Pin|ENM1_Pin| ENM3_Pin|ENM4_Pin|ENM5_Pin|ENM6_Pin|ENM7_Pin, SET);
  8000420:	2201      	movs	r2, #1
  8000422:	f64f 010c 	movw	r1, #63500	; 0xf80c
  8000426:	485b      	ldr	r0, [pc, #364]	; (8000594 <updateLEDMatrix+0x230>)
@@ -826,8 +827,8 @@ int main(void)
  800068c:	600a      	str	r2, [r1, #0]
  800068e:	4618      	mov	r0, r3
  8000690:	f7ff fe68 	bl	8000364 <updateLEDMatrix>
-		  setTimer3(10);
- 8000694:	200a      	movs	r0, #10
+		  setTimer3(50);
+ 8000694:	2032      	movs	r0, #50	; 0x32
  8000696:	f000 f937 	bl	8000908 <setTimer3>
 	  if(timer0_flag == 1) {
  800069a:	e79a      	b.n	80005d2 <main+0x32>
