@@ -226,7 +226,7 @@ int main(void)
   setTimer0(100);
   setTimer1(25) ;
   setTimer2(10) ;
-  setTimer3(20);
+  setTimer3(2);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -261,10 +261,10 @@ int main(void)
 	  if(timer3_flag == 1){
 		  if(index_led_matrix > 7) {
 			  index_led_matrix = 0;
-			  chang_matrix_buffer(matrix_buffer, 8);
+		      chang_matrix_buffer(matrix_buffer, 8);
 		  }
 		  updateLEDMatrix(index_led_matrix++);
-		  setTimer3(50);
+		  setTimer3(4);
 	  }
     /* USER CODE END WHILE */
 

@@ -767,8 +767,8 @@ int main(void)
   setTimer2(10) ;
  800062e:	200a      	movs	r0, #10
  8000630:	f000 f990 	bl	8000954 <setTimer2>
-  setTimer3(20);
- 8000634:	2014      	movs	r0, #20
+  setTimer3(2);
+ 8000634:	2002      	movs	r0, #2
  8000636:	f000 f9a1 	bl	800097c <setTimer3>
 
   /* Infinite loop */
@@ -886,7 +886,7 @@ int main(void)
  80006e6:	4b13      	ldr	r3, [pc, #76]	; (8000734 <main+0x12c>)
  80006e8:	2200      	movs	r2, #0
  80006ea:	601a      	str	r2, [r3, #0]
-			  chang_matrix_buffer(matrix_buffer, 8);
+		      chang_matrix_buffer(matrix_buffer, 8);
  80006ec:	2108      	movs	r1, #8
  80006ee:	4812      	ldr	r0, [pc, #72]	; (8000738 <main+0x130>)
  80006f0:	f7ff fe38 	bl	8000364 <chang_matrix_buffer>
@@ -899,8 +899,8 @@ int main(void)
  80006fc:	600a      	str	r2, [r1, #0]
  80006fe:	4618      	mov	r0, r3
  8000700:	f7ff fe64 	bl	80003cc <updateLEDMatrix>
-		  setTimer3(50);
- 8000704:	2032      	movs	r0, #50	; 0x32
+		  setTimer3(4);
+ 8000704:	2004      	movs	r0, #4
  8000706:	f000 f939 	bl	800097c <setTimer3>
 	  if(timer0_flag == 1) {
  800070a:	e796      	b.n	800063a <main+0x32>
