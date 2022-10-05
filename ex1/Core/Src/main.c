@@ -57,15 +57,12 @@ static void MX_TIM2_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 void display7SEG(int num){
+	// Hexadecimal for each number which is present by 7 segment led
+	//for example, number 0 correspond with 0x3f,
 	uint16_t display[10] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7D, 0x07, 0x7F, 0x6f};
 	uint16_t bit_var = display[num];
-	HAL_GPIO_WritePin(SEG0_GPIO_Port, SEG0_Pin, !(bit_var & 0x01));
-		HAL_GPIO_WritePin(SEG1_GPIO_Port, SEG1_Pin, !((bit_var>>1)&0x01));
-		HAL_GPIO_WritePin(SEG2_GPIO_Port, SEG2_Pin, !((bit_var>>2)&0x01));
-		HAL_GPIO_WritePin(SEG3_GPIO_Port, SEG3_Pin, !((bit_var>>3)&0x01));
-		HAL_GPIO_WritePin(SEG4_GPIO_Port, SEG4_Pin, !((bit_var>>4)&0x01));
-		HAL_GPIO_WritePin(SEG5_GPIO_Port, SEG5_Pin, !((bit_var>>5)&0x01));
-		HAL_GPIO_WritePin(SEG6_GPIO_Port, SEG6_Pin, !((bit_var>>6)&0x01));
+	HAL_GPIO_WritePin(GPIOB, bit_var, RESET);
+	HAL_GPIO_WritePin(GPIOB, ~bit_var, SET);
 }
 /* USER CODE END 0 */
 
@@ -232,29 +229,35 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+/*
+ *variable counter is used to turn on and turn off
+ *led each 0.5s
+ * */
 int counter = 50;
-int status = 0;
+int status = 0; //Utilize status to change led
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 {
 	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, RESET);
-	counter--;
+	counter--;// if counter == 0, it'll call
 		if(status == 0){
+			// if counter <= 0, EN0 is in reset state, EN1 is in set state.
 			if(counter <=0 ) {
 				counter = 50;
 				status = 1 - status;
 			}
 			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, RESET);
 			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, SET);
-			display7SEG(1);
+			display7SEG(1); // call display7SEG function
 		}
 		if(status == 1){
+			// if counter <= 0, EN0 is in set state, EN1 is in reset state.
 			if(counter <=0 ) {
 				counter = 50;
 				status = 1- status;
 			}
 			HAL_GPIO_WritePin(GPIOA, EN0_Pin, SET);
 			HAL_GPIO_WritePin(GPIOA, EN1_Pin, RESET);
-			display7SEG(2);
+			display7SEG(2);// call display7SEG function
 			}
 }
 /* USER CODE END 4 */
