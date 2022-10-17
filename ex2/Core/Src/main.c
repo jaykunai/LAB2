@@ -235,19 +235,26 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+/*
+ *variable counter is used to turn on and turn off
+ *led each 0.5s
+ */
 int counter = 50;
 int status = 0;
-int counter1 = 100;
+int counter1 = 100;// counter1 is used to turn on and turn off DOT and LED_RED in 1s period
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 {
-	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, RESET);
 	counter--;
 	counter1--;
+	//if counter <= 0, toggle DOT and LED_RED
 		if(counter1 <= 0){
 			counter1 = 100;
 			HAL_GPIO_TogglePin(GPIOA, DOT_Pin);
+			HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 		}
+		// LED 7 SEGMENT_0 turns on and others turn off
 		if(status == 0){
+			//if counter <= 0, status = 1 and set counter = 50
 			if(counter <=0 ) {
 				counter = 50;
 				status = 1;
@@ -258,7 +265,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 			HAL_GPIO_WritePin(GPIOA, EN3_Pin, SET);
 			display7SEG(1);
 		}
+		// LED 7 SEGMENT_1 is turns on and others turn off
 		if(status == 1){
+			//if counter <= 0, status = 2 and set counter = 50
 			if(counter <=0 ) {
 				counter = 50;
 				status = 2;
@@ -269,7 +278,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 			HAL_GPIO_WritePin(GPIOA, EN3_Pin, SET);
 			display7SEG(2);
 			}
+		// LED 7 SEGMENT_2 is turns on and others turn off
 		if(status == 2){
+			//if counter <= 0, status = 3 and set counter = 50
 			if(counter <=0 ) {
 				counter = 50;
 				status = 3;
@@ -280,7 +291,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 			HAL_GPIO_WritePin(GPIOA, EN3_Pin, SET);
 			display7SEG(0);
 				}
+		// LED 7 SEGMENT_3 turns on and others turn off
 		if(status == 3){
+			//if counter <= 0, status = 0 and set counter = 50
 			if(counter <=0 ) {
 				counter = 50;
 				status = 0;

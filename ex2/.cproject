@@ -175,4 +175,5 @@
 			<resource resourceType="PROJECT" workspacePath="/ex2_lab2"/>
 		</configuration>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 </cproject>
