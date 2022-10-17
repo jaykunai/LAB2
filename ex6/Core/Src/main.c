@@ -170,10 +170,12 @@ int main(void)
   while (1)
   {
 	  if(timer0_flag == 1) {
+		  //each 1s, DOT turns on or turns off
 	  		  HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
 	  		  setTimer0(100) ;
 	  }
 	  if(timer1_flag == 1){
+	  //when timer1_flag = 1, second, minute, hour update their value
 		  second++;
 		  if(second >= 60){
 		 	second = 0;
@@ -186,6 +188,9 @@ int main(void)
 		  if(hour >=24){
 			  hour = 0;
 		 }
+		  //after update value of second, minute, hour
+		  //call updateClockbuffer() function
+		  //call setTimer1(100)
 		  updateClockBuffer();
 		  setTimer1(100);
 	  }
