@@ -58,17 +58,13 @@ static void MX_TIM2_Init(void);
 /* USER CODE BEGIN 0 */
 int hour = 15 , minute = 8 , second = 50;
 void display7SEG(int num){
+	// corresponding hexadecimal from 0 to 9, example 0 is 0x3f,...
 	uint16_t display[10] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7D, 0x07, 0x7F, 0x6f};
 	uint16_t bit_var = display[num];
-//	HAL_GPIO_WritePin(SEG0_GPIO_Port, SEG0_Pin, !(bit_var & 0x01));
-//		HAL_GPIO_WritePin(SEG1_GPIO_Port, SEG1_Pin, !((bit_var>>1)&0x01));
-//		HAL_GPIO_WritePin(SEG2_GPIO_Port, SEG2_Pin, !((bit_var>>2)&0x01));
-//		HAL_GPIO_WritePin(SEG3_GPIO_Port, SEG3_Pin, !((bit_var>>3)&0x01));
-//		HAL_GPIO_WritePin(SEG4_GPIO_Port, SEG4_Pin, !((bit_var>>4)&0x01));
-//		HAL_GPIO_WritePin(SEG5_GPIO_Port, SEG5_Pin, !((bit_var>>5)&0x01));
-//		HAL_GPIO_WritePin(SEG6_GPIO_Port, SEG6_Pin, !((bit_var>>6)&0x01));
-	    HAL_GPIO_WritePin(GPIOB, bit_var, RESET);
-	    HAL_GPIO_WritePin(GPIOB, ~bit_var, SET);
+	//turn on LED which perform number on LED & SEGMENT
+	HAL_GPIO_WritePin(GPIOB, bit_var, RESET);
+	//turn off LED which perform number on LED & SEGMENT
+	HAL_GPIO_WritePin(GPIOB, ~bit_var, SET);
 }
 const int MAX_LED = 4;
 int index_led = 0;
@@ -104,18 +100,26 @@ void update7SEG(int index){
 	}
 }
 void updateClockBuffer(){
+	//case hour <=9, led_buffer[0] = 0
+	// led_buffer[1] = hour
 	if(hour >= 0 && hour <=9){
 		led_buffer[0] = 0;
 		led_buffer[1] = hour;
 	}
+	//case hour >=10, led_buffer[1] = hour mod 10
+	// led_buffer[0] = hour div 10
 	if(hour >=10 && hour <=23){
 		led_buffer[1] = hour%10;
 		led_buffer[0] = hour/10;
 	}
+	//case minute <=9, led_buffer[2] = 0
+	// led_buffer[3] = minute
 	if(minute >= 0 && minute <=9){
 			led_buffer[2] = 0;
 			led_buffer[3] = minute;
 		}
+	//case minute >=10, led_buffer[3] mod 10
+	// led_buffer[2] = minute div 10
 	if(minute >=10 && minute <=59){
 			led_buffer[3] = minute%10;
 			led_buffer[2] = minute/10;
