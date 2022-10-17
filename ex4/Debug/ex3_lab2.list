@@ -37,13 +37,13 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  16 .debug_macro  0001625a  00000000  00000000  0002aa10  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   000092ca  00000000  00000000  00040c6a  2**0
+ 17 .debug_line   000092c8  00000000  00000000  00040c6a  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    00081d11  00000000  00000000  00049f34  2**0
+ 18 .debug_str    00081cf5  00000000  00000000  00049f32  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000053  00000000  00000000  000cbc45  2**0
+ 19 .comment      00000053  00000000  00000000  000cbc27  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00002618  00000000  00000000  000cbc98  2**2
+ 20 .debug_frame  00002618  00000000  00000000  000cbc7c  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -87,6 +87,7 @@ void display7SEG(int num){
  800014e:	b088      	sub	sp, #32
  8000150:	af00      	add	r7, sp, #0
  8000152:	6078      	str	r0, [r7, #4]
+	// corresponding hexadecimal from 0 to 9, example 0 is 0x3f,...
 	uint16_t display[10] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7D, 0x07, 0x7F, 0x6f};
  8000154:	4b10      	ldr	r3, [pc, #64]	; (8000198 <display7SEG+0x4c>)
  8000156:	f107 0408 	add.w	r4, r7, #8
@@ -102,18 +103,15 @@ void display7SEG(int num){
  800016c:	4413      	add	r3, r2
  800016e:	f833 3c18 	ldrh.w	r3, [r3, #-24]
  8000172:	83fb      	strh	r3, [r7, #30]
-//		HAL_GPIO_WritePin(SEG2_GPIO_Port, SEG2_Pin, !((bit_var>>2)&0x01));
-//		HAL_GPIO_WritePin(SEG3_GPIO_Port, SEG3_Pin, !((bit_var>>3)&0x01));
-//		HAL_GPIO_WritePin(SEG4_GPIO_Port, SEG4_Pin, !((bit_var>>4)&0x01));
-//		HAL_GPIO_WritePin(SEG5_GPIO_Port, SEG5_Pin, !((bit_var>>5)&0x01));
-//		HAL_GPIO_WritePin(SEG6_GPIO_Port, SEG6_Pin, !((bit_var>>6)&0x01));
-	    HAL_GPIO_WritePin(GPIOB, bit_var, RESET);
+	//turn on LED which perform number on LED & SEGMENT
+	HAL_GPIO_WritePin(GPIOB, bit_var, RESET);
  8000174:	8bfb      	ldrh	r3, [r7, #30]
  8000176:	2200      	movs	r2, #0
  8000178:	4619      	mov	r1, r3
  800017a:	4808      	ldr	r0, [pc, #32]	; (800019c <display7SEG+0x50>)
  800017c:	f000 fd42 	bl	8000c04 <HAL_GPIO_WritePin>
-	    HAL_GPIO_WritePin(GPIOB, ~bit_var, SET);
+	//turn off LED which perform number on LED & SEGMENT
+	HAL_GPIO_WritePin(GPIOB, ~bit_var, SET);
  8000180:	8bfb      	ldrh	r3, [r7, #30]
  8000182:	43db      	mvns	r3, r3
  8000184:	b29b      	uxth	r3, r3
@@ -238,7 +236,7 @@ void update7SEG(int index){
  8000260:	20000000 	.word	0x20000000
 
 08000264 <HAL_TIM_PeriodElapsedCallback>:
-int counter = 100;
+int counter = 25;
 int counter1 = 100;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 {
@@ -246,45 +244,47 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
  8000266:	b082      	sub	sp, #8
  8000268:	af00      	add	r7, sp, #0
  800026a:	6078      	str	r0, [r7, #4]
-	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, RESET);
- 800026c:	2200      	movs	r2, #0
- 800026e:	2120      	movs	r1, #32
- 8000270:	4818      	ldr	r0, [pc, #96]	; (80002d4 <HAL_TIM_PeriodElapsedCallback+0x70>)
- 8000272:	f000 fcc7 	bl	8000c04 <HAL_GPIO_WritePin>
 	counter--;
+ 800026c:	4b19      	ldr	r3, [pc, #100]	; (80002d4 <HAL_TIM_PeriodElapsedCallback+0x70>)
+ 800026e:	681b      	ldr	r3, [r3, #0]
+ 8000270:	3b01      	subs	r3, #1
+ 8000272:	4a18      	ldr	r2, [pc, #96]	; (80002d4 <HAL_TIM_PeriodElapsedCallback+0x70>)
+ 8000274:	6013      	str	r3, [r2, #0]
+	counter1--;
  8000276:	4b18      	ldr	r3, [pc, #96]	; (80002d8 <HAL_TIM_PeriodElapsedCallback+0x74>)
  8000278:	681b      	ldr	r3, [r3, #0]
  800027a:	3b01      	subs	r3, #1
  800027c:	4a16      	ldr	r2, [pc, #88]	; (80002d8 <HAL_TIM_PeriodElapsedCallback+0x74>)
  800027e:	6013      	str	r3, [r2, #0]
-	counter1--;
- 8000280:	4b16      	ldr	r3, [pc, #88]	; (80002dc <HAL_TIM_PeriodElapsedCallback+0x78>)
- 8000282:	681b      	ldr	r3, [r3, #0]
- 8000284:	3b01      	subs	r3, #1
- 8000286:	4a15      	ldr	r2, [pc, #84]	; (80002dc <HAL_TIM_PeriodElapsedCallback+0x78>)
- 8000288:	6013      	str	r3, [r2, #0]
 		if(counter1 <= 0){
- 800028a:	4b14      	ldr	r3, [pc, #80]	; (80002dc <HAL_TIM_PeriodElapsedCallback+0x78>)
- 800028c:	681b      	ldr	r3, [r3, #0]
- 800028e:	2b00      	cmp	r3, #0
- 8000290:	dc06      	bgt.n	80002a0 <HAL_TIM_PeriodElapsedCallback+0x3c>
+ 8000280:	4b15      	ldr	r3, [pc, #84]	; (80002d8 <HAL_TIM_PeriodElapsedCallback+0x74>)
+ 8000282:	681b      	ldr	r3, [r3, #0]
+ 8000284:	2b00      	cmp	r3, #0
+ 8000286:	dc0b      	bgt.n	80002a0 <HAL_TIM_PeriodElapsedCallback+0x3c>
+			//each 1s, LED RED and DOT will toggle
 			counter1 = 100;
- 8000292:	4b12      	ldr	r3, [pc, #72]	; (80002dc <HAL_TIM_PeriodElapsedCallback+0x78>)
- 8000294:	2264      	movs	r2, #100	; 0x64
- 8000296:	601a      	str	r2, [r3, #0]
+ 8000288:	4b13      	ldr	r3, [pc, #76]	; (80002d8 <HAL_TIM_PeriodElapsedCallback+0x74>)
+ 800028a:	2264      	movs	r2, #100	; 0x64
+ 800028c:	601a      	str	r2, [r3, #0]
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, RESET);
+ 800028e:	2200      	movs	r2, #0
+ 8000290:	2120      	movs	r1, #32
+ 8000292:	4812      	ldr	r0, [pc, #72]	; (80002dc <HAL_TIM_PeriodElapsedCallback+0x78>)
+ 8000294:	f000 fcb6 	bl	8000c04 <HAL_GPIO_WritePin>
 			HAL_GPIO_TogglePin(GPIOA, DOT_Pin);
  8000298:	2110      	movs	r1, #16
- 800029a:	480e      	ldr	r0, [pc, #56]	; (80002d4 <HAL_TIM_PeriodElapsedCallback+0x70>)
+ 800029a:	4810      	ldr	r0, [pc, #64]	; (80002dc <HAL_TIM_PeriodElapsedCallback+0x78>)
  800029c:	f000 fcca 	bl	8000c34 <HAL_GPIO_TogglePin>
 		}
 		if(counter <= 0){
- 80002a0:	4b0d      	ldr	r3, [pc, #52]	; (80002d8 <HAL_TIM_PeriodElapsedCallback+0x74>)
+ 80002a0:	4b0c      	ldr	r3, [pc, #48]	; (80002d4 <HAL_TIM_PeriodElapsedCallback+0x70>)
  80002a2:	681b      	ldr	r3, [r3, #0]
  80002a4:	2b00      	cmp	r3, #0
  80002a6:	dc11      	bgt.n	80002cc <HAL_TIM_PeriodElapsedCallback+0x68>
-		counter = 100;
- 80002a8:	4b0b      	ldr	r3, [pc, #44]	; (80002d8 <HAL_TIM_PeriodElapsedCallback+0x74>)
- 80002aa:	2264      	movs	r2, #100	; 0x64
+		//each 0.25s, update7SEG function update a new value parameter
+		counter = 25;
+ 80002a8:	4b0a      	ldr	r3, [pc, #40]	; (80002d4 <HAL_TIM_PeriodElapsedCallback+0x70>)
+ 80002aa:	2219      	movs	r2, #25
  80002ac:	601a      	str	r2, [r3, #0]
 		update7SEG(index_led++);
  80002ae:	4b0c      	ldr	r3, [pc, #48]	; (80002e0 <HAL_TIM_PeriodElapsedCallback+0x7c>)
@@ -308,9 +308,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
  80002ce:	3708      	adds	r7, #8
  80002d0:	46bd      	mov	sp, r7
  80002d2:	bd80      	pop	{r7, pc}
- 80002d4:	40010800 	.word	0x40010800
- 80002d8:	20000010 	.word	0x20000010
- 80002dc:	20000014 	.word	0x20000014
+ 80002d4:	20000010 	.word	0x20000010
+ 80002d8:	20000014 	.word	0x20000014
+ 80002dc:	40010800 	.word	0x40010800
  80002e0:	20000040 	.word	0x20000040
 
 080002e4 <main>:
