@@ -125,7 +125,12 @@ const int MAX_LED_MATRIX = 8;
 int index_led_matrix = 0;
 //uint8_t matrix_buffer[8] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
 uint8_t matrix_buffer[8] = {0x00, 0xFC, 0xfe, 0x33, 0x33, 0xFE, 0xFC, 0x00};
+//chang_matrix_buffer is used to shift left elements in matrix_buffer
 void chang_matrix_buffer(uint8_t matrix_buffer[], uint8_t n){
+	//create temporary variable var to convert matrix_buffer[i]
+	// and matrix_buffer[i+1];
+	// temp variable is used to change value the first value
+	//and the final value element
 	uint8_t temp;
 	temp = matrix_buffer[0];
 	uint8_t var;
@@ -226,22 +231,26 @@ int main(void)
   setTimer0(100);
   setTimer1(25) ;
   setTimer2(10) ;
-  setTimer3(2);
+  setTimer3(10);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  //DOT and LED_RED
 	  if(timer0_flag == 1) {
 	  		  HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
+	  		  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, RESET);
 	  		  setTimer0(100) ;
 	  }
+	  //update7SEG
 	  if(timer1_flag == 1){
 		  update7SEG(index_led++);
 		  		if(index_led > 3) index_led = 0;
 		  setTimer1(25);
 	  }
+	  //clock
 	  if(timer2_flag == 1){
 		  second++;
 		  if(second >= 60){
@@ -258,13 +267,14 @@ int main(void)
 		  updateClockBuffer();
 		  setTimer2(100);
 	  }
+	  //
 	  if(timer3_flag == 1){
 		  if(index_led_matrix > 7) {
 			  index_led_matrix = 0;
 		      chang_matrix_buffer(matrix_buffer, 8);
 		  }
 		  updateLEDMatrix(index_led_matrix++);
-		  setTimer3(4);
+		  setTimer3(30);
 	  }
     /* USER CODE END WHILE */
 
@@ -327,7 +337,7 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 7999;
+  htim2.Init.Prescaler = 799;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim2.Init.Period = 9;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
