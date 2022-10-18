@@ -56,7 +56,7 @@ static void MX_TIM2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-int hour = 15 , minute = 8 , second = 50;
+int hour = 15 , minute = 58 , second = 50;
 void display7SEG(int num){
 	uint16_t display[10] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7D, 0x07, 0x7F, 0x6f};
 	uint16_t bit_var = display[num];
@@ -117,7 +117,6 @@ void updateClockBuffer(){
 int counter = 25;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 {
-	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, RESET);
 	if(counter > 0){
 		counter--;
 		if(counter <= 0){
@@ -163,7 +162,6 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim2);
   setTimer0(2);
-  setTimer1(7);
   /* USER CODE END 2 */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -172,9 +170,7 @@ int main(void)
 	  if(timer0_flag == 1) {
 		  //each 1s, DOT turns on or turns off
 	  		  HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
-	  		  setTimer0(100) ;
-	  }
-	  if(timer1_flag == 1){
+	  		  HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 	  //when timer1_flag = 1, second, minute, hour update their value
 		  second++;
 		  if(second >= 60){
@@ -188,11 +184,8 @@ int main(void)
 		  if(hour >=24){
 			  hour = 0;
 		 }
-		  //after update value of second, minute, hour
-		  //call updateClockbuffer() function
-		  //call setTimer1(100)
 		  updateClockBuffer();
-		  setTimer1(100);
+		  setTimer0(100);
 	  }
     /* USER CODE END WHILE */
 
