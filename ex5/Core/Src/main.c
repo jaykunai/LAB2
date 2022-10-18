@@ -129,11 +129,11 @@ int counter = 25;
 int counter1 = 100;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 {
-	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, RESET);
 	counter--;
 	counter1--;
 		if(counter1 <= 0){
 			counter1 = 100;
+			HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 			HAL_GPIO_TogglePin(GPIOA, DOT_Pin);
 		}
 		if(counter <= 0){
