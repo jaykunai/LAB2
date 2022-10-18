@@ -108,7 +108,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 			counter1 = 100;
 			// each 1s, led red and DOT turn off or turn on in 1s
 			HAL_GPIO_TogglePin(GPIOA, DOT_Pin);
-			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, RESET);
+			HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 		}
 		if(counter <= 0){
 		// each 0.5s, update&SEG function update a new value parameter
