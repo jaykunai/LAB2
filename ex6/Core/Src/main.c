@@ -116,7 +116,6 @@ void updateClockBuffer(){
 }
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 {
-	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, RESET);
 	timerRun();
 }
 //LED MATRIX
@@ -241,7 +240,7 @@ int main(void)
 	  //DOT and LED_RED
 	  if(timer0_flag == 1) {
 	  		  HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
-	  		  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, RESET);
+	  		  HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 	  		  setTimer0(100) ;
 	  }
 	  //update7SEG
@@ -274,7 +273,7 @@ int main(void)
 		      chang_matrix_buffer(matrix_buffer, 8);
 		  }
 		  updateLEDMatrix(index_led_matrix++);
-		  setTimer3(30);
+		  setTimer3(20);
 	  }
     /* USER CODE END WHILE */
 
