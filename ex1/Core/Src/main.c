@@ -234,10 +234,15 @@ static void MX_GPIO_Init(void)
  *led each 0.5s
  * */
 int counter = 50;
+int counter1 = 100;
 int status = 0; //Utilize status to change led
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 {
-	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, RESET);
+	counter1--;
+	if(counter1 <= 0){
+		counter1 = 100;
+		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+	}
 	counter--;// if counter == 0, it'll call
 		if(status == 0){
 			// if counter <= 0, EN0 is in reset state, EN1 is in set state.
